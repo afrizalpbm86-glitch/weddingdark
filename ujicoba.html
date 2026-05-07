@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Afrizal & Ayu - Gothic Wedding</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:wght@300;400;600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  
+  <style>
+    :root { --bg: #0A0A0A; --blood: #8B0000; --silver: #C0C0C0; --rose: #4A0404; --text: #E8E8E8; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; width: 100%; overflow: hidden; position: fixed; }
+    body { 
+      font-family: 'Cormorant Garamond', serif; background: var(--bg); color: var(--text);
+      background-image: 
+        radial-gradient(circle at 20% 50%, rgba(139,0,0,0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(74,4,0.15) 0%, transparent 50%);
+    }
+
+    /* RUNNING TEXT KAYA BERITA TV */
+    .breaking-news {
+      position: fixed; top: 0; left: 0; width: 100%; height: 35px; z-index: 1001;
+      background: linear-gradient(90deg, var(--blood), var(--rose), var(--blood));
+      overflow: hidden; border-bottom: 2px solid var(--silver);
+    }
+    .breaking-news-content {
+      display: flex; align-items: center; height: 100%; white-space: nowrap;
+      animation: scroll 20s linear infinite;
+    }
+    .breaking-news-content span {
+      font-family: 'Cinzel Decorative', cursive; font-size: 14px; letter-spacing: 2px;
+      color: var(--silver); text-shadow: 0 0 10px rgba(192,192,192,0.8); padding: 0 50px;
+    }
+    @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+    /* BUNGA TERBANG PAS BUKA */
+    .flying-flowers {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+      pointer-events: none; z-index: 999; display: none;
+    }
+    .flying-flowers.active { display: block; }
+    .flower {
+      position: absolute; font-size: 20px; opacity: 0;
+      animation: fall 3s ease-in forwards;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* BINGKAI GOTHIC 4 POJOK */
+    .gothic-frame {
+      position: fixed; width: 100%; height: 100%; pointer-events: none; z-index: 100;
+    }
+    .gothic-frame::before, .gothic-frame::after {
+      content: '🕷️'; position: absolute; font-size: 40px; color: var(--silver); opacity: 0.3;
+    }
+    .gothic-frame::before { top: 45px; left: 10px; }
+    .gothic-frame::after { top: 45px; right: 10px; transform: scaleX(-1); }
+    .gothic-corner {
+      position: absolute; width: 80px; height: 80px; border: 2px solid var(--silver);
+      opacity: 0.4;
+    }
+    .gothic-corner.tl { top: 45px; left: 10px; border-right: none; border-bottom: none; }
+    .gothic-corner.tr { top: 45px; right: 10px; border-left: none; border-bottom: none; }
+    .gothic-corner.bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+    .gothic-corner.br { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+    /* COVER */
+    .cover {
+      position: fixed; top: 35px; left: 0; width: 100%; height: calc(100% - 35px); z-index: 1000;
+      background: var(--bg); display: flex; justify-content: center; align-items: center; flex-direction: column;
+      transition: opacity 1.5s, visibility 1.5s; padding: 0 20px;
+    }
+    .cover-img { 
+      position: absolute; width: 90%; height: 60%; object-fit: contain; 
+      border-radius: 10px; border: 2px solid var(--silver); 
+      box-shadow: 0 0 50px rgba(192,192,192,0.3), inset 0 0 30px rgba(139,0,0,0.2);
+      filter: grayscale(0.3) contrast(1.1);
+    }
+    .cover.hide { opacity: 0; visibility: hidden; }
+    .cover-content { position: relative; z-index: 3; text-align: center; margin-top: 50vh; }
+    .cover .subtitle { 
+      font-family: 'Cinzel Decorative', cursive; font-size: 11px; letter-spacing: 4px; 
+      margin-bottom: 15px; color: var(--silver); text-transform: uppercase; 
+    }
+    .cover .title { 
+      font-family: 'UnifrakturMaguntia', cursive; font-size: 52px; color: var(--blood); 
+      margin: 10px 0; text-shadow: 0 0 20px rgba(139,0,0,0.8), 2px 2px 4px #000; 
+    }
+    .cover .date { font-size: 14px; letter-spacing: 3px; margin: 20px 0 30px 0; color: var(--silver); }
+    .btn-open {
+      padding: 14px 40px; background: linear-gradient(45deg, var(--blood), var(--rose)); 
+      color: var(--silver); border: 2px solid var(--silver); border-radius: 5px; 
+      font-family: 'Cinzel Decorative', cursive; font-weight: 700; font-size: 14px; cursor: pointer;
+      box-shadow: 0 5px 25px rgba(139,0,0,0.6); transition: 0.3s; letter-spacing: 2px;
+    }
+    .btn-open:active { transform: scale(0.95); }
+    
+    /* MAIN */
+    .main { display: none; width: 100%; height: calc(100% - 35px); margin-top: 35px; }
+    .main.active { display: block; }
+    
+    .swiper { width: 100%; height: 100%; }
+    .swiper-slide {
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center; position: relative; perspective: 1200px; padding: 20px;
+    }
+    
+    /* FOTO 3D MUTER KALO DISENTUH */
+    .photo-3d {
+      width: 90%; height: 55%; position: relative; cursor: pointer;
+      transform-style: preserve-3d; transition: transform 1s cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
+    .photo-3d.flipped { transform: rotateY(180deg) rotateX(10deg); }
+    .photo-front, .photo-back {
+      position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+      border-radius: 10px; border: 2px solid var(--silver);
+      box-shadow: 0 0 40px rgba(192,192,192,0.3), 0 10px 30px rgba(0,0,0,0.8);
+    }
+    .photo-front img {
+      width: 100%; height: 100%; object-fit: contain; border-radius: 8px; background: #000;
+      filter: grayscale(0.2) contrast(1.2);
+    }
+    .photo-back { 
+      transform: rotateY(180deg); 
+      background: radial-gradient(circle, var(--blood), var(--rose), #000); 
+      display: flex; justify-content: center; align-items: center; 
+      font-family: 'UnifrakturMaguntia', cursive; font-size: 36px; color: var(--silver);
+      text-shadow: 0 0 20px rgba(192,192,192,0.8);
+    }
+    .tap-hint {
+      position: absolute; bottom: -35px; left: 50%; transform: translateX(-50%);
+      font-size: 10px; color: var(--silver); opacity: 0.6; font-style: italic;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:0.6} 50%{opacity:0.2} }
+    
+    .slide-content {
+      position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%);
+      z-index: 3; width: 90%; max-width: 400px;
+      background: rgba(10,10,10,0.95); padding: 18px; border-radius: 8px; 
+      border: 1px solid var(--silver); backdrop-filter: blur(15px);
+      box-shadow: 0 0 30px rgba(0,0,0,0.9), inset 0 0 20px rgba(139,0,0,0.1);
+    }
+    .slide-heading { 
+      font-family: 'UnifrakturMaguntia', cursive; font-size: 32px; color: var(--blood); 
+      margin-bottom: 10px; text-shadow: 0 0 15px rgba(139,0,0,0.6);
+    }
+    .couple-name { 
+      font-family: 'Cinzel Decorative', cursive; font-size: 26px; color: var(--silver); 
+      margin: 8px 0; letter-spacing: 2px;
+    }
+    .text-content { font-size: 12px; line-height: 1.7; margin-bottom: 8px; color: var(--text); }
+    
+    /* NAMA ORANG TUA - INI YANG BARU */
+    .parent-name { font-size: 12px; margin: 12px 0; line-height: 1.6; }
+    .parent-name strong { 
+      display: block; font-size: 13px; font-weight: 600; margin-bottom: 2px; 
+      color: var(--blood); font-family: 'Cinzel Decorative', cursive; letter-spacing: 1px;
+    }
+    
+    /* COUNTDOWN WAKTU BERJALAN - INI YANG BARU */
+    .countdown { display: flex; gap: 5px; margin: 12px 0; justify-content: center; flex-wrap: wrap; }
+    .countdown-item { 
+      background: rgba(139,0,0,0.2); padding: 5px; border-radius: 5px; 
+      min-width: 50px; border: 1px solid var(--silver);
+    }
+    .countdown-item .number { 
+      font-size: 18px; font-weight: 700; display: block; color: var(--blood); 
+      font-family: 'Cinzel Decorative', cursive;
+    }
+    .countdown-item .label { font-size: 8px; text-transform: uppercase; color: var(--silver); letter-spacing: 1px; }
+    
+    .ayat-arab { 
+      font-family: 'Amiri', serif; font-size: 17px; line-height: 2.2; 
+      color: var(--blood); margin-bottom: 10px; direction: rtl;
+      text-shadow: 0 0 10px rgba(139,0,0,0.4);
+    }
+    .ayat-arti { font-size: 10px; font-style: italic; line-height: 1.5; opacity: 0.8; }
+    
+    .venue-box { 
+      background: rgba(139,0,0,0.15); padding: 10px; border-radius: 8px; margin: 8px 0; 
+      border: 1px solid rgba(192,192,192,0.3); 
+    }
+    .venue-title { 
+      font-family: 'Cinzel Decorative', cursive; font-weight: 600; color: var(--blood); 
+      margin-bottom: 6px; display: block; font-size: 13px; letter-spacing: 1px;
+    }
+    .btn-maps {
+      display: inline-block; margin-top: 8px; padding: 7px 16px; 
+      background: linear-gradient(45deg, var(--blood), var(--rose)); 
+      color: var(--silver); border: 1px solid var(--silver); border-radius: 5px; 
+      text-decoration: none; font-weight: 600; font-size: 11px; letter-spacing: 1px;
+    }
+    
+    .swiper-pagination { bottom: 15px !important; }
+    .swiper-pagination-bullet { 
+      width: 10px; height: 10px; background: var(--silver); opacity: 0.3; 
+      border-radius: 2px; transform: rotate(45deg);
+    }
+    .swiper-pagination-bullet-active { background: var(--blood); opacity: 1; box-shadow: 0 0 10px var(--blood); }
+    
+    .music-btn {
+      position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; 
+      background: rgba(10,10,10,0.9); color: var(--blood); border: 2px solid var(--silver); 
+      font-size: 18px; cursor: pointer; z-index: 999; display: flex; 
+      justify-content: center; align-items: center; backdrop-filter: blur(10px);
+      border-radius: 5px; box-shadow: 0 0 20px rgba(139,0,0,0.5);
+    }
+    .music-btn.playing { animation: spin 3s linear infinite; border-color: var(--blood); }
+
+ /* WATERMARK LU */
+    .watermark-ads-center {
+      text-align: center; padding: 12px 10px; font-size: 11px; font-weight: 600; color: #FFD700;
+      background: rgba(0, 0, 0, 0.7); letter-spacing: 1px; position: fixed; bottom: 0; width: 100%; z-index: 998;
+    }
+    .watermark-ads-center a { color:#FFD700; text-decoration:none; font-weight:700; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <!-- RUNNING TEXT BREAKING NEWS -->
+  <div class="breaking-news">
+    <div class="breaking-news-content">
+      <span>⚰️ THE GOTHIC WEDDING OF AFRIZAL & AYU JULITA ⚰️</span>
+      <span>🖤 SABTU, 11 JULI 2026 🖤</span>
+      <span>🌹 TILL DEATH DO US PART 🌹</span>
+      <span>⚰️ THE GOTHIC WEDDING OF AFRIZAL & AYU JULITA ⚰️</span>
+    </div>
+  </div>
+
+  <!-- BUNGA TERBANG -->
+  <div class="flying-flowers" id="flowers"></div>
+
+  <!-- BINGKAI GOTHIC -->
+  <div class="gothic-frame">
+    <div class="gothic-corner tl"></div>
+    <div class="gothic-corner tr"></div>
+    <div class="gothic-corner bl"></div>
+    <div class="gothic-corner br"></div>
+  </div>
+
+  <div class="cover" id="cover">
+    <img src="./cover.webp" class="cover-img" alt="Cover">
+    <div class="cover-content">
+      <div class="subtitle">UNTIL DEATH DO US PART</div>
+      <h1 class="title">Afrizal & Ayu</h1>
+      <div class="date">11 . 07 . 2026</div>
+      <button class="btn-open" onclick="openInvitation()">
+        <i class="fas fa-skull"></i> ENTER THE REALM
+      </button>
+    </div>
+  </div>
+
+  <div class="main" id="main">
+    <div class="swiper main-swiper">
+      <div class="swiper-wrapper">
+        
+        <!-- SLIDE 1: COUNTDOWN + SAVE THE DATE -->
+        <div class="swiper-slide">
+          <div class="photo-3d" onclick="this.classList.toggle('flipped')">
+            <div class="photo-front">
+              <img src="./bg1.webp" alt="Foto 1">
+            </div>
+            <div class="photo-back">Eternally Bound</div>
+            <div class="tap-hint">Touch to reveal</div>
+          </div>
+          <div class="slide-content">
+            <div class="slide-heading">Save The Date</div>
+            <div class="couple-name">Afrizal & Ayu</div>
+            <p class="text-content">Sabtu, 11 Juli 2026</p>
+            <!-- COUNTDOWN WAKTU BERJALAN -->
+            <div class="countdown" id="countdown">
+              <div class="countdown-item"><span class="number" id="days">00</span><span class="label">Hari</span></div>
+              <div class="countdown-item"><span class="number" id="hours">00</span><span class="label">Jam</span></div>
+              <div class="countdown-item"><span class="number" id="minutes">00</span><span class="label">Menit</span></div>
+              <div class="countdown-item"><span class="number" id="seconds">00</span><span class="label">Detik</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 2: AYAT -->
+        <div class="swiper-slide">
+          <div class="photo-3d" onclick="this.classList.toggle('flipped')">
+            <div class="photo-front">
+              <img src="./bg2.webp" alt="Maha Suci Allah">
+            </div>
+            <div class="photo-back">Sacred Vows</div>
+            <div class="tap-hint">Touch to reveal</div>
+          </div>
+          <div class="slide-content">
+            <div class="slide-heading">Q.S Ar-Rum: 21</div>
+            <p class="ayat-arab">
+              وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً
+            </p>
+            <p class="ayat-arti">
+              "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan pasangan hidup dari jenismu sendiri, agar kamu merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang."
+            </p>
+          </div>
+        </div>
+
+        <!-- SLIDE 3: MEMPELAI PRIA + NAMA ORANG TUA -->
+        <div class="swiper-slide">
+          <div class="photo-3d" onclick="this.classList.toggle('flipped')">
+            <div class="photo-front">
+              <img src="./bg3.webp" alt="Foto 3">
+            </div>
+            <div class="photo-back">The Groom</div>
+            <div class="tap-hint">Touch to reveal</div>
+          </div>
+          <div class="slide-content">
+            <div class="slide-heading">The Groom</div>
+            <div class="couple-name">Afrizal</div>
+            <!-- NAMA ORANG TUA -->
+            <div class="parent-name">
+              <strong>Putra dari</strong>
+              Bapak Ahmad & Ibu Siti
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 4: MEMPELAI WANITA + NAMA ORANG TUA -->
+        <div class="swiper-slide">
+          <div class="photo-3d" onclick="this.classList.toggle('flipped')">
+            <div class="photo-front">
+              <img src="./bg4.webp" alt="Foto 4">
+            </div>
+            <div class="photo-back">The Bride</div>
+            <div class="tap-hint">Touch to reveal</div>
+          </div>
+          <div class="slide-content">
+            <div class="slide-heading">The Bride</div>
+            <div class="couple-name">Ayu Julita</div>
+            <!-- NAMA ORANG TUA -->
+            <div class="parent-name">
+              <strong>Putri dari</strong>
+              Bapak Bambang & Ibu Lina
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 5: AKAD -->
+        <div class="swiper-slide">
+          <div class="photo-3d" onclick="this.classList.toggle('flipped')">
+            <div class="photo-front">
+              <img src="./bg1.webp" alt="Foto 5">
+            </div>
+            <div class="photo-back">Holy Matrimony</div>
+            <div class="tap-hint">Touch to reveal</div>
+          </div>
+          <div class="slide-content">
+            <div class="slide-heading">Akad Nikah</div>
+            <div class="venue-box">
+              <span class="venue-title"><i class="fas fa-calendar-alt"></i> SABTU, 11 JULI 2026</span>
+              <p class="text-content">
+                Pukul 08:00 WIB - Selesai<br><br>
+                <i class="fas fa-church"></i> <strong>Masjid Agung Palembang</strong><br>
+                Jl. Jend. Sudirman No.1, Palembang
+              </p>
+              <a href="https://maps.google.com/?q=Masjid+Agung+Palembang" target="_blank" class="btn-maps">
+                <i class="fas fa-map"></i> LOCATE
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 6: RESEPSI -->
+        <div class="swiper-slide">
+          <div class="photo-3d" onclick="this.classList.toggle('flipped')">
+            <div class="photo-front">
+              <img src="./bg2.webp" alt="">
+            </div>
+            <div class="photo-back">Dark Celebration</div>
+            <div class="tap-hint">Touch to reveal</div>
+          </div>
+          <div class="slide-content">
+            <div class="slide-heading">Resepsi</div>
+            <div class="venue-box">
+              <span class="venue-title"><i class="fas fa-calendar-alt"></i> SABTU, 11 JULI 2026</span>
+              <p class="text-content">
+                Pukul 11:00 - 14:00 WIB<br><br>
+                <i class="fas fa-landmark"></i> <strong>Gedung Serbaguna</strong><br>
+                Jl. Angkatan 45, Palembang
+              </p>
+              <a href="https://maps.google.com/?q=Gedung+Serbaguna+Palembang" target="_blank" class="btn-maps">
+                <i class="fas fa-map"></i> LOCATE
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+
+  <button class="music-btn" id="musicBtn" onclick="toggleMusic()">
+    <i class="fas fa-music"></i>
+  </button>
+  <audio id="bgMusic" loop>
+    <source src="./lagu.mp3" type="audio/mpeg">
+  </audio>
+
+<!-- WATERMARK LU MIN -->
+  <div class="watermark-ads-center">
+    ⚡ ADS Creative | 
+    <a href="https://wa.me/6285273150178?text=Halo%20min,%20mau%20order%20undangan%20digital" target="_blank">
+       Order WA: 0852-7315-0178
+    </a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    let swiper; let musicPlayed = false;
+    const music = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+
+    function createFlowers() {
+      const container = document.getElementById('flowers');
+      const flowers = ['🌹', '🥀', '🖤', '🦇', '🕷️', '💀'];
+      for (let i = 0; i < 40; i++) {
+        setTimeout(() => {
+          const flower = document.createElement('div');
+          flower.className = 'flower';
+          flower.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+          flower.style.left = Math.random() * 100 + '%';
+          flower.style.animationDelay = Math.random() * 2 + 's';
+          flower.style.fontSize = (Math.random() * 15 + 15) + 'px';
+          container.appendChild(flower);
+          setTimeout(() => flower.remove(), 3000);
+        }, i * 80);
+      }
+    }
+
+    function openInvitation() {
+      document.getElementById('cover').classList.add('hide');
+      document.getElementById('main').classList.add('active');
+      document.getElementById('flowers').classList.add('active');
+      createFlowers();
+      playMusic(); 
+      initSwiper();
+      setTimeout(() => document.getElementById('flowers').classList.remove('active'), 4000);
+    }
+
+    function initSwiper() {
+      swiper = new Swiper('.main-swiper', {
+        direction: 'horizontal', loop: true,
+        autoplay: { delay: 7000, disableOnInteraction: false },
+        pagination: { el: '.swiper-pagination', clickable: true },
+        effect: 'creative',
+        creativeEffect: {
+          prev: { shadow: true, translate: ['-120%', 0, -500], rotate: [0, 0, -15] },
+          next: { shadow: true, translate: ['120%', 0, -500], rotate: [0, 0, 15] },
+        },
+        speed: 1000,
+      });
+    }
+
+    function playMusic() {
+      if (!musicPlayed) {
+        music.play().then(() => {
+          musicPlayed = true; musicBtn.classList.add('playing');
+          musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        }).catch(e => {});
+      }
+    }
+
+    function toggleMusic() {
+      if (music.paused) {
+        music.play(); musicBtn.classList.add('playing');
+        musicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      } else {
+        music.pause(); musicBtn.classList.remove('playing');
+        musicBtn.innerHTML = '<i class="fas fa-music"></i>';
+      }
+    }
+
+    // COUNTDOWN WAKTU BERJALAN - INI YANG BARU
+    const weddingDate = new Date("July 11, 2026 08:00:00").getTime();
+    const countdownTimer = setInterval(function() {
+      const now = new Date().getTime(); const distance = weddingDate - now;
+      if (distance < 0) {
+        clearInterval(countdownTimer);
+        document.getElementById('countdown').innerHTML = "<h3 style='color:var(--blood);font-family:UnifrakturMaguntia;'>The Ritual Has Begun</h3>";
+        return;
+      }
+      document.getElementById('days').innerHTML = Math.floor(distance / 86400000).toString().padStart(2, '0');
+      document.getElementById('hours').innerHTML = Math.floor((distance % 86400000) / 3600000).toString().padStart(2, '0');
+      document.getElementById('minutes').innerHTML = Math.floor((distance % 3600000) / 60000).toString().padStart(2, '0');
+      document.getElementById('seconds').innerHTML = Math.floor((distance % 60000) / 1000).toString().padStart(2, '0');
+    }, 1000);
+  </script>
+</body>
+</html>
